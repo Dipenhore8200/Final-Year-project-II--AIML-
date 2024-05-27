@@ -34,9 +34,9 @@ def predict_values(input_features):
         prediction =model.predict(input_array)
         print(prediction)
         # You can format the prediction as needed
-        if prediction[0] == 0:
+        if prediction[0] <= 0.95:
             formatted_prediction = 'the protein is HIV Negative'
-        elif prediction[0] == 1:
+        elif prediction[0] > 0.95:
             formatted_prediction = 'the protein is HIV positive'
         else:
             formatted_prediction = 'Prediction result unknown'
