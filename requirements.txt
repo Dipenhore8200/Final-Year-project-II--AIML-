@@ -6,3 +6,4 @@ uvicorn
 Jinja2
 python-multipart
 pickle
+python-3.10.6
