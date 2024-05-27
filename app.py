@@ -38,7 +38,8 @@ def predict_values(input_features):
             formatted_prediction = 'the protein is HIV Negative'
         elif prediction[0] == 1:
             formatted_prediction = 'the protein is HIV positive'
-
+        else:
+            formatted_prediction = 'Prediction result unknown'
         return formatted_prediction
 
     except Exception as e:
