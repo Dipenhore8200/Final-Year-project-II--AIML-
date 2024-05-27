@@ -25,9 +25,10 @@ df = pd.read_csv("hiv_dataset_deployment.csv")
 
 def predict_values(input_features):
     try:
+        input_array = np.array(input_features).reshape(1, -1)
         input_array = scaler.transform(input_array)
         # Convert the list to a NumPy array with shape (1, -1)
-        input_array = np.array(input_features).reshape(1, -1)
+        
         
         # Make prediction using the loaded XGBoost model
         prediction =model.predict(input_array)
