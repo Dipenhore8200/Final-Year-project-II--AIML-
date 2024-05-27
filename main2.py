@@ -20,7 +20,7 @@ app.mount("/templates", StaticFiles(directory="templates"), name="templates")
 
 
 # Load the entire model
-model = load_model('final_model.h5')
+model = load_model('Final_Model.h5')
 df = pd.read_csv("hiv_dataset_deployment.csv")
 
 def predict_values(input_features):
