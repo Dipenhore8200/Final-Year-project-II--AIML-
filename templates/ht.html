@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ML Model Prediction</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+        background: url("/static/ff.png") no-repeat center center fixed;
+        background-size: cover;
+        background-attachment: fixed; /* Keep the background fixed when scrolling */
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background-color: #333;
+        padding: 0px;
+        text-align: center;
+        z-index: 1000;
+      }
+
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        background-color: #111;
+        padding: 0px;
+      }
+
+      nav a {
+        color: #fff;
+        text-decoration: none;
+        padding: 10px;
+        transition: color 0.3s;
+        font-size: 16px;
+      }
+
+      nav a:hover {
+        color: #4caf50;
+      }
+
+      .try-now-btn {
+        background-color: #4caf50;
+        color: #fff;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        display: block;
+        margin-top: 1px;
+        font-size: 16px;
+      }
+
+      .try-now-btn:hover {
+        background-color: #45a049;
+      }
+
+      .content-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 90%;
+        margin: 120px auto 20px; /* Adjusted margin for space below navbar */
+      }
+
+      .continuous-content {
+        padding: 20px;
+        text-align: center;
+        font-size: 24px;
+        animation: fade-in 2s ease;
+        width: 100%;
+        color: #0000ff;
+      }
+
+      h1 {
+        text-align: center;
+        color: #fff;
+        animation: fade-in 2s ease;
+      }
+
+      .form-title {
+        font-size: 29px;
+        font-weight: 600;
+        text-align: center;
+        padding-bottom: 6px;
+        color: white;
+        text-shadow: 2px 2px 2px black;
+        border-bottom: solid 1px white;
+      }
+
+  .form-content {
+  /* Removed incorrect properties */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  width: 80%;
+  margin-bottom: 20px;
+  color: #eee;
+}
+
+      form {
+        background-color: rgba(128, 0,20, 0.9);
+        border-radius: 8px;
+        justify-content: space-between;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+        width: 100%;
+        color: #fff;
+      }
+
+      fieldset {
+        display: flex;
+        flex-wrap: wrap;
+        border: none;
+        padding: 15px;
+        margin: 15px 0;
+        justify-content: space-between;
+        background-color: rgba(245, 245, 220, 0.2);
+        border-radius: 8px;
+      }
+
+      legend {
+        text-transform: uppercase;
+        font-weight: bold;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 4px;
+        padding: 5px 10px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 15px;
+      }
+
+      input,
+      select {
+        width: calc(100% - 10px);
+        padding: 10px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      button {
+        background-color: #fff;
+        color: #0000ff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #ddd;
+      }
+
+      .result-message {
+        margin-top: 20px;
+        text-align: center;
+        color: #4caf50;
+        font-size: 18px;
+      }
+
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* Responsive styles */
+      @media screen and (max-width: 600px) {
+        .content-container {
+          margin-top: 60px;
+        }
+        nav {
+          flex-direction: column;
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        .form-content {
+          width: 100%;
+        }
+      }
+
+
+    button {
+    background-color: #4caf50; /* Green color */
+    color: #fff;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+
+  button:hover {
+    background-color: #45a049; /* Darker green color on hover */
+    transform: scale(1.05); /* Increase size on hover */
+  }
+
+  button:active {
+    transform: scale(0.95); /* Decrease size when clicked */
+  }
+
+
+.result-container {
+  position: relative;
+  margin-top: 20px;
+  text-align: center;
+  color: #4caf50;
+  font-size: 25px;
+}
+
+.result-box {
+  background-color: rgba(116, 37, 43, 0.9); /* Semi-transparent light red-brown color */
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+  margin: 0 auto; /* Center the box horizontally */
+  max-width: 80%; /* Adjust the width of the box as needed */
+}
+
+    </style>
+
+
+
+    <script>
+      // JavaScript code remains the same
+const proteinOptions = ['Q9HBW0', 'P60568', 'P09651', 'Q6Q788', 'P43629', 'P08637', 'A0A1W2PQB1', 'P01730', 'P10145', 'P48061', 'Q15363', 'Q8IZ57', 'Q9HC16', 'P05362', 'O75475', 'Q96EB6', 'P23297', 'Q5T7Y4', 'P43630', 'P01889', 'P13501', 'P40305', 'P40933', 'P21926', 'Q14C87', 'Q86YL7', 'Q15116', 'P42081', 'P10321', 'A0A583ZBW8', 'P61073', 'P16410', 'Q05066', 'P13500', 'P03973', 'P01375', 'Q92945', 'Q9P1U0', 'P18089', 'P04040', 'Q6IB77', 'Q9UH17', 'P01589', 'P42680', 'Q92570', 'Q92570', 'P51681', 'P10147', 'P28482', 'P04271', 'A8MRB1', 'P10451', 'P20309', 'Q14573', 'P54259', 'Q86V38', 'P13591', 'P21796', 'O00585', 'P45381', 'P26717', 'Q15848', 'A8K660', 'O94811', 'P42224', 'Q9C035', 'P07998', 'P03999', 'Q9H4A6', 'Q9GZX7', 'P54725', 'P11473', 'P16278', 'P48681', 'P30048', 'P02545', 'P22301', 'P04085', 'Q10589', 'P67809', 'Q9NR12', 'P17735', 'Q7Z7C8', 'P41597', 'Q14242', 'A0A0C4DFY0', 'Q99731', 'Q8IUR6', 'P01563', 'Q86X60', 'Q99653', 'Q9UHD1', 'P02768', 'Q8TES7', 'P04150', 'Q15125', 'O95433', 'P14778', 'Q14693', 'P20701', 'O60763', 'P08684', 'O60603', 'P01579', 'O60934', 'Q99816', 'Q8TD17', 'Q9H1Y0', 'P35372', 'P29466', 'O75832', 'Q14627', 'Q9NSU2', 'Q14005', 'P37231', 'O43918', 'P06744', 'Q9UPZ9', 'Q12800', 'P60709', 'Q99259', 'A0A0S2Z4D9', 'P25440', 'Q15762', 'P02778', 'P21579', 'Q8N1L9', 'O15439', 'Q9Y3Z3', 'Q9Y2S7', 'Q96AG4', 'P08183', 'P25445', 'P49327', 'P02741', 'Q9Y4B6', 'P14317', 'Q13084', 'P01137', 'Q86UE4', 'P01570', 'P04792', 'P27361', 'Q09028', 'P54849', 'Q96QU6', 'Q9GZX6', 'P05412', 'P13232', 'Q15843', 'P51677', 'P10176', 'Q9NRJ3', 'P04233', 'P04114', 'P32320', 'Q9ULV1', 'P51692', 'P13236', 'Q02790', 'P25942', 'P20592', 'P35579', 'P42771', 'Q8N726', 'O43909', 'Q8TAX7', 'P63279', 'Q9UNS1', 'P42574', 'P12318', 'P43694', 'P01588', 'Q13619', 'P10747', 'P34932', 'O60260', 'P23352', 'P01562', 'P01562', 'P25090', 'P05231', 'Q03181', 'Q16539', 'Q86VB7', 'Q8IU57', 'Q9NRF9', 'P00533', 'P43681', 'O75791', 'P28328', 'Q8N7H5', 'Q9NNX6', 'Q29983', 'Q92887', 'Q9NZH6', 'P17252', 'P11226', 'Q99578', 'P78352', 'P28347', 'O60232', 'Q00653', 'P05154', 'Q8IUH3', 'O14519', 'Q16630', 'Q14116', 'P31749', 'A0A0S2Z3D6', 'P63261', 'P41221', 'P07988', 'P04732', 'P03952', 'P26678', 'P25025', 'Q01826', 'O00421', 'Q9UKK6', 'P43699', 'P43699', 'Q5TYM5', 'Q8A1G2', 'Q99KQ4', 'P56528', 'P28472', 'P23895', 'O94804', 'Q06278'];
+
+  // Function to populate the dropdown options
+  function populateProteinOptions() {
+    const dropdown = document.getElementById('protein_selection');
+
+    // Clear existing options
+    dropdown.innerHTML = '';
+
+    // Add new options from the array
+    proteinOptions.forEach(option => {
+      const optionElement = document.createElement('option');
+      optionElement.value = option;
+      optionElement.textContent = option;
+      dropdown.appendChild(optionElement);
+    });
+  }
+
+  // Call the function to populate options when the page loads
+  window.addEventListener('load', populateProteinOptions);
+
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Contributors</a>
+        <a href="#">Contact</a>
+        <button class="try-now-btn">Try Now</button>
+      </nav>
+    </header>
+
+    <div class="content-container">
+      <h1>Protein Status Predictor for HIV(I) </h1>
+      <div class="continuous-content" id="continuous-content"></div>
+    </div>
+
+<div class="form-content">
+  <form action="/predict2/" method="post">
+    <h2 class="form-title">Select Uniprot ID of Protein</h2>
+
+    <fieldset class="formfield1">
+      <legend>Uniprot Id</legend>
+      <!-- Input fields for the second form (similar to the existing ones) -->
+      <label for="protein_selection">Select From List:</label>
+      <select name="protein_selection" id="protein_selection" required>
+          <!-- Options will be dynamically added using JavaScript -->
+      </select>
+      <!-- Add more input fields as needed -->
+    </fieldset>
+
+    <!-- Add more fieldsets for the second form (if needed) -->
+
+    <button type="submit">Predict</button>
+  </form>
+
+
+</div>
+ <h2>OR</h2>
+
+
+    <div class="form-content">
+       <form action="/predict/" method="post">
+        <h2 class="form-title">Enter protein data</h2>
+
+       <fieldset class="formfield1">
+          <legend>Centrality</legend>
+	  <div>
+             <label for="subgraph">Subgraph:</label>
+            <input type="number" step="any" name="subgraph" required>
+          </div>
+          <div>
+             <label for="degree">Degree:</label>
+            <input type="number" step="any" name="degree" required>
+          </div>
+          <div>
+             <label for="eigenvector">Eigenvector:</label>
+            <input type="number" step="any" name="eigenvector" required>
+          </div>
+          <div>
+            <label for="information">Information:</label>
+            <input type="number" step="any" name="information" required>
+          </div>
+          <div>
+            <label for="lac">LAC:</label>
+            <input type="number" step="any" name="lac" required>
+          </div>
+          <div>
+            <label for="betweenness">Betweenness:</label>
+            <input type="number" step="any" name="betweenness" required>
+          </div>
+          <div>
+            <label for="closeness">Closeness:</label>
+            <input type="number" step="any" name="closeness" required>
+          </div>
+          <div>
+            <label for="network">Network:</label>
+            <input type="number" step="any" name="network" required>
+          </div>
+        </fieldset>
+
+        <fieldset class="fieldset2">
+          <legend>Standard Physico-chemical Properties</legend>
+	  <div class="float_superclass">
+            <div >
+              <label for="pcp_pc">pcp_pc (Positively charged):</label>
+            <input type="number" step="any" name="pcp_pc" required>
+
+            </div>
+            <div>
+            <label for="pcp_nc">pcp_nc (Negatively charged):</label>
+            <input type="number" step="any" name="pcp_nc" required>
+            </div>
+            <div  >
+           <label for="pcp_ne">PCP_NE (Neutral charged):</label>
+           <input type="number" step="any" name="pcp_ne" required>
+            </div>
+           <div>
+              <label for="pcp_po">pcp_po (Polarity):</label>
+            <input type="number" step="any" name="pcp_po" required>
+
+            </div>
+
+          </div>
+
+
+          <div class="float_superclass">
+            <div>
+            <label for="pcp_np">PCP_NP (Non-polarity):</label>
+            <input type="number" step="any" name="pcp_np" required>
+            </div>
+            <div>
+               <label for="pcp_al">PCP_AL (ALIPHATICITY):</label>
+            <input type="number" step="any" name="pcp_al" required>
+            </div>
+            <div>
+                <label for="pcp_cy">pcp_CY (CYCLIC):</label>
+            <input type="number" step="any" name="pcp_cy" required>
+            </div>
+            <div>
+                <label for="pcp_ar">pcp_AR (AROMATICITY):</label>
+            	<input type="number" step="any" name="pcp_ar" required>
+            </div>
+            <div>
+                <label for="pcp_ac">pcp_AC (ACIDITY):</label>
+            <input type="number" step="any" name="pcp_ac" required>
+            </div>
+          </div>
+
+
+
+          <div class="float_superclass">
+            <div>
+                <label for="pcp_bs">PCP_BS (BASICITY):</label>
+            <input type="number" step="any" name="pcp_bs" required>
+
+            </div>
+            <div>
+                <label for="pcp_ne_ph">PCP_NE (NEUTRAL(PH)):</label>
+            <input type="number" step="any" name="pcp_ne_ph" required>
+
+	    </div>
+             <div>
+                <label for="pcp_hb">PCP_HB (Hydrophobicity):</label>
+            <input type="number" step="any" name="pcp_hb" required>
+             </div>
+              <div>
+                <label for="pcp_hl">PCP_HL (Hydrophilicity):</label>
+            <input type="number" step="any" name="pcp_hl" required>
+              </div>
+              <div>
+                <label for="pcp_nt">PCP_NT (NEWTRAL):</label>
+            <input type="number" step="any" name="pcp_nt" required>
+              </div>
+          </div>
+
+
+          <div class="float_superclass">
+            <div>
+                 <label for="pcp_hx">PCP_HX (Hydroxylic):</label>
+            <input type="number" step="any" name="pcp_hx" required>
+              </div>
+              <div>
+                 <label for="pcp_sc">PCP_SC (Sulphur content):</label>
+            <input type="number" step="any" name="pcp_sc" required>
+
+              </div>
+              <div>
+                 <label for="pcp_tn">PCP_tn (Tiny):</label>
+            <input type="number" step="any" name="pcp_tn" required>
+              </div>
+              <div>
+               <label for="pcp_sl">PCP_sl (Small):</label>
+            <input type="number" step="any" name="pcp_sl" required>
+              </div>
+              <div>
+                <label for="pcp_lr">PCP_lr (Large):</label>
+            <input type="number" step="any" name="pcp_lr" required>
+              </div>
+          </div>
+          
+        </fieldset>
+
+        <fieldset>
+          <legend>Advance Physico-chemical Properties</legend>
+
+          <div>
+             <label for="pcp_z1">pcp_z1:</label>
+            <input type="number" step="any" name="pcp_z1" required>
+          </div>
+          <div>
+            <label for="pcp_z2">pcp_z2:</label>
+            <input type="number" step="any" name="pcp_z2" required>
+          </div>
+          <div>
+           <label for="pcp_z3">pcp_z3:</label>
+            <input type="number" step="any" name="pcp_z3" required>
+
+          </div>
+          <div>
+            <label for="pcp_z4">pcp_z4:</label>
+            <input type="number" step="any" name="pcp_z4" required>
+          </div>
+          <div>
+            <label for="pcp_z5">pcp_z5:</label>
+            <input type="number" step="any" name="pcp_z5" required>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Structural Physico-chemical Properties</legend>
+
+          <div>
+            <label for="secondary_structure_helix">Secondary Structure (Helix):</label>
+            <input type="number" step="any" name="secondary_structure_helix" required>
+
+          </div>
+          <div>
+            <label for="secondary_structure_strands">Secondary Structure (Strands):</label>
+            <input type="number" step="any" name="secondary_structure_strands" required>
+          </div>
+          <div>
+            <label for="secondary_structure_coil">Secondary Structure (Coil):</label>
+            <input type="number" step="any" name="secondary_structure_coil" required>
+          </div>
+          <div>
+              <label for="solvent_accessibility_buried">Solvent Accessibility (Buried):</label>
+            <input type="number" step="any" name="solvent_accessibility_buried" required>
+          </div>
+          <div>
+            <label for="solvent_accessibility_exposed">Solvent Accessibility (Exposed):</label>
+            <input type="number" step="any" name="solvent_accessibility_exposed" required>
+
+          </div>
+          <div>
+            <label for="solvent_accessibility_intermediate">Solvent Accessibility (Intermediate):</label>
+            <input type="number" step="any" name="solvent_accessibility_intermediate" required>
+          </div>
+        </fieldset>
+
+         <fieldset class="fieldset2">
+          <legend>Shannon Entropy of Residues</legend>
+	  <div class="float_superclass">
+          <div>
+           <label for="ser_a">SER-A:</label>
+            <input type="number" step="any" name="ser_a" required>
+          </div>
+          <div>
+             <label for="ser_c">SER-C:</label>
+            <input type="number" step="any" name="ser_c" required>
+          </div>
+          <div>
+           <label for="ser_d">SER-D:</label>
+            <input type="number" step="any" name="ser_d" required>
+          </div>
+          </div>
+	  <div class="float_superclass">
+	 <div>
+           <label for="ser_e">SER-E:</label>
+            <input type="number" step="any" name="ser_e" required>
+          </div>
+          <div>
+             <label for="ser_f">SER-F:</label>
+            <input type="number" step="any" name="ser_f" required>
+
+          </div>
+	<div>
+            <label for="ser_g">SER-G:</label>
+            <input type="number" step="any" name="ser_g" required>
+        </div>
+	</div>
+	<div class="float_superclass">
+	 <div>
+            <label for="ser_h">SER-H:</label>
+            <input type="number" step="any" name="ser_h" required>
+          </div>
+          <div>
+            
+            <label for="ser_i">SER-I:</label>
+            <input type="number" step="any" name="ser_i" required>
+
+
+          </div>
+	<div>
+           <label for="ser_k">SER-K:</label>
+           <input type="number" step="any" name="ser_k" required>
+        </div>
+	</div>
+
+	
+	<div class="float_superclass">
+	 <div>
+            <label for="ser_l">SER-L:</label>
+            <input type="number" step="any" name="ser_l" required>
+          </div>
+          <div>
+             <label for="ser_m">SER-M:</label>
+            <input type="number" step="any" name="ser_m" required>
+          </div>
+	<div>
+             <label for="ser_n">SER-N:</label>
+            <input type="number" step="any" name="ser_n" required>
+        </div>
+	</div>
+
+
+	<div class="float_superclass">
+	 <div>
+            <label for="ser_p">SER-P:</label>
+            <input type="number" step="any" name="ser_p" required>
+
+          </div>
+          <div>
+            <label for="ser_q">SER-Q:</label>
+            <input type="number" step="any" name="ser_q" required>
+          </div>
+	<div>
+            <label for="ser_r">SER-R:</label>
+            <input type="number" step="any" name="ser_r" required>
+
+        </div>
+	</div>
+
+
+	<div class="float_superclass">
+	 <div>
+            <label for="ser_s">SER-S:</label>
+            <input type="number" step="any" name="ser_s" required>
+          </div>
+          <div>
+            <label for="ser_t">SER-T:</label>
+            <input type="number" step="any" name="ser_t" required>
+
+          </div>
+	<div>
+            <label for="ser_v">SER-V:</label>
+            <input type="number" step="any" name="ser_v" required>
+
+        </div>
+	</div>
+
+	<div class="float_superclass">
+	 <div>
+             <label for="ser_w">SER-W:</label>
+            <input type="number" step="any" name="ser_w" required>
+          </div>
+          <div>
+           <label for="ser_y">SER-Y:</label>
+            <input type="number" step="any" name="ser_y" required>
+          </div>
+	</div>
+        </fieldset>
+
+
+	<fieldset class="fieldset2">
+          <legend>Shannon Entropy of protien level</legend>
+	  <div class="float_superclass">
+          <div>
+            <label for="sep_pp">SEp-pp:</label>
+        <input type="number" step="any" name="sep_pp" required>
+          </div>
+          <div>
+	</fieldset>
+	
+
+        <button type="submit">Predict</button>
+      </form>
+    </div>
+
+
+<div class="result-container">
+      <div class="result-box">
+        {% if selected_protein %}
+          <h2>predicted Value: {{ selected_protein }}</h2>
+          <p>Actual value: {{ selected_proteinA }}</p>
+        {% endif %}
+
+        {% if total_sum %}
+          <h2>predicted Value:{{ total_sum}}</h2>
+        {% endif %}
+        <div id="result"></div>
+      </div>
+    </div>
+  </body>
+</html>

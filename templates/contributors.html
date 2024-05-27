@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: rgb(230, 76, 76);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .member {
+            width: 48%;
+            box-sizing: border-box;
+            padding: 1em;
+            text-align: center;
+            margin: 1%;
+            background-color: #f5e1b4;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .member img {
+            width:  100px;
+            height: 100px;
+            object-fit: cover;
+            /* width: 20%; */
+            border-radius: 50%;
+        }
+
+        .top-members {
+            width: 30%; /* Set the width to 100% for each member in the top row */
+        }
+
+        .bottom-members {
+            /* display: flex; */
+            /* justify-content: center; */
+            margin-top: 20px;
+            width: 30%;
+        }
+    </style>
+    <title>Contributor Page</title>
+</head>
+<body>
+    <header>
+        <h1>Our Team</h1>
+    </header>
+
+    <div class="container">
+        <div class="member top-members" id="member1">
+            <img src="/static/dipen_about.jpg" alt="Member 1">
+            <h3>Dipen Hore</h3>
+            <p>Web Developer</p>
+        </div>
+
+        <div class="member top-members" id="member2">
+            <img src="/static/arnab_2.jpg" alt="Member 2">
+            <h3>Arnab Kumar Dutta</h3>
+            <p>UI/UX Designer</p>
+        </div>
+
+        <div class="member top-members" id="member3">
+            <img src="/static/sambudhha_2.jpg" alt="Member 3">
+            <h3>Sambudhha Koner</h3>
+            <p>Backend Developer</p>
+        </div>
+
+        <div class="member bottom-members" id="member4">
+            <img src="/static/kaushik_2.JPG" alt="Member 4">
+            <h3>Kaushik Dey</h3>
+            <p>Frontend Developer</p>
+        </div>
+
+        <div class="member bottom-members" id="member5">
+            <img src="/static/Somak_about.jpg" alt="Member 5">
+            <h3>Somak Bose</h3>
+            <p>Graphic Designer</p>
+        </div>
+    </div>
+
+    <script>
+        // You can add JavaScript functionality here if needed
+    </script>
+</body>
+</html>
